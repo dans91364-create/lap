@@ -1,6 +1,6 @@
 """Database models for the LAP system."""
 
-from sqlalchemy import Column, Integer, String, Float, DateTime, Boolean, Text, ForeignKey, Numeric, Date
+from sqlalchemy import Column, Integer, String, Float, DateTime, Boolean, Text, ForeignKey, Numeric, Date, ARRAY
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 from datetime import datetime
@@ -226,3 +226,100 @@ class Resultado(Base):
     # Relationships
     item = relationship("Item", back_populates="resultados")
     fornecedor = relationship("Fornecedor", back_populates="resultados")
+
+
+class Anomalia(Base):
+    """Model for detected anomalies in biddings."""
+    __tablename__ = "anomalias"
+    
+    id = Column(Integer, primary_key=True, index=True)
+    licitacao_id = Column(Integer, ForeignKey("licitacoes.id"))
+    item_id = Column(Integer)
+    fornecedor_id = Column(Integer)
+    tipo = Column(String(50), nullable=False, index=True)
+    descricao = Column(Text)
+    valor_detectado = Column(Numeric(15, 2))
+    valor_referencia = Column(Numeric(15, 2))
+    percentual_desvio = Column(Numeric(10, 2))
+    score_risco = Column(Numeric(5, 2))
+    status = Column(String(20), default='pendente', index=True)
+    observacoes = Column(Text)
+    analisado_por = Column(String(100))
+    analisado_em = Column(DateTime)
+    created_at = Column(DateTime, default=datetime.utcnow, index=True)
+
+
+class AlertaConfiguracao(Base):
+    """Model for alert configurations."""
+    __tablename__ = "alertas_configuracao"
+    
+    id = Column(Integer, primary_key=True, index=True)
+    nome = Column(String(100), nullable=False)
+    ativo = Column(Boolean, default=True, index=True)
+    tipo = Column(String(50), nullable=False, index=True)
+    palavras_chave = Column(ARRAY(Text))
+    municipios = Column(ARRAY(Integer))
+    modalidades = Column(ARRAY(String(50)))
+    valor_minimo = Column(Numeric(15, 2))
+    valor_maximo = Column(Numeric(15, 2))
+    canal_notificacao = Column(String(20), nullable=False)
+    destinatario = Column(String(255), nullable=False)
+    created_at = Column(DateTime, default=datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    
+    # Relationships
+    disparados = relationship("AlertaDisparado", back_populates="configuracao", cascade="all, delete-orphan")
+
+
+class AlertaDisparado(Base):
+    """Model for triggered alerts."""
+    __tablename__ = "alertas_disparados"
+    
+    id = Column(Integer, primary_key=True, index=True)
+    configuracao_id = Column(Integer, ForeignKey("alertas_configuracao.id"), nullable=False, index=True)
+    licitacao_id = Column(Integer, ForeignKey("licitacoes.id"), index=True)
+    mensagem = Column(Text)
+    enviado = Column(Boolean, default=False, index=True)
+    enviado_em = Column(DateTime)
+    erro = Column(Text)
+    created_at = Column(DateTime, default=datetime.utcnow, index=True)
+    
+    # Relationships
+    configuracao = relationship("AlertaConfiguracao", back_populates="disparados")
+
+
+class EmpresaImpedida(Base):
+    """Model for restricted companies (CEIS/CNEP)."""
+    __tablename__ = "empresas_impedidas"
+    
+    id = Column(Integer, primary_key=True, index=True)
+    cnpj = Column(String(20), nullable=False, index=True)
+    razao_social = Column(String(255))
+    fonte = Column(String(10), nullable=False, index=True)  # CEIS ou CNEP
+    tipo_sancao = Column(String(100))
+    data_inicio_sancao = Column(Date)
+    data_fim_sancao = Column(Date, index=True)
+    orgao_sancionador = Column(String(255))
+    uf_orgao = Column(String(2))
+    fundamentacao_legal = Column(Text)
+    data_atualizacao = Column(DateTime)
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+
+class GovernancaMunicipio(Base):
+    """Model for municipality governance KPIs."""
+    __tablename__ = "governanca_municipios"
+    
+    id = Column(Integer, primary_key=True, index=True)
+    municipio_id = Column(Integer, ForeignKey("municipios.id"), index=True)
+    periodo = Column(String(7), nullable=False, index=True)  # YYYY-MM
+    indice_transparencia = Column(Numeric(5, 2))
+    taxa_sucesso = Column(Numeric(5, 2))
+    tempo_medio_dias = Column(Integer)
+    indice_hhi = Column(Numeric(10, 4))
+    participacao_meepp = Column(Numeric(5, 2))
+    economia_media = Column(Numeric(5, 2))
+    total_licitacoes = Column(Integer)
+    valor_total = Column(Numeric(15, 2))
+    created_at = Column(DateTime, default=datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
