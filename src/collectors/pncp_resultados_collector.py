@@ -13,6 +13,28 @@ logger = logging.getLogger(__name__)
 class PNCPResultadosCollector(BaseCollector):
     """Collector for PNCP bidding items and results."""
     
+    async def collect(self, **kwargs) -> List[Dict[str, Any]]:
+        """
+        Implementation of the abstract collect method.
+        
+        Args:
+            **kwargs: Parameters for collection. Expected keys:
+                - cnpj: Organization CNPJ
+                - ano: Year
+                - sequencial: Sequential number
+                
+        Returns:
+            List of collected data items
+        """
+        cnpj = kwargs.get('cnpj')
+        ano = kwargs.get('ano')
+        sequencial = kwargs.get('sequencial')
+        
+        if cnpj and ano and sequencial:
+            result = await self.collect_all_itens_and_resultados(cnpj, ano, sequencial)
+            return [result] if result else []
+        return []
+    
     async def collect_itens(
         self,
         cnpj: str,

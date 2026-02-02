@@ -1,6 +1,6 @@
 """Database models for the LAP system."""
 
-from sqlalchemy import Column, Integer, String, Float, DateTime, Boolean, Text, ForeignKey, Numeric, Date, ARRAY
+from sqlalchemy import Column, Integer, String, Float, DateTime, Boolean, Text, ForeignKey, Numeric, Date, JSON
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 from datetime import datetime
@@ -257,9 +257,9 @@ class AlertaConfiguracao(Base):
     nome = Column(String(100), nullable=False)
     ativo = Column(Boolean, default=True, index=True)
     tipo = Column(String(50), nullable=False, index=True)
-    palavras_chave = Column(ARRAY(Text))
-    municipios = Column(ARRAY(Integer))
-    modalidades = Column(ARRAY(String(50)))
+    palavras_chave = Column(JSON, default=list)
+    municipios = Column(JSON, default=list)
+    modalidades = Column(JSON, default=list)
     valor_minimo = Column(Numeric(15, 2))
     valor_maximo = Column(Numeric(15, 2))
     canal_notificacao = Column(String(20), nullable=False)
