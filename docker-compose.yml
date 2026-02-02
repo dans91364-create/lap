@@ -60,6 +60,18 @@ services:
     depends_on:
       - postgres
 
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: lap_frontend
+    ports:
+      - "3000:80"
+    environment:
+      - VITE_API_URL=http://localhost:8000
+    depends_on:
+      - app
+
 volumes:
   postgres_data:
   redis_data:
