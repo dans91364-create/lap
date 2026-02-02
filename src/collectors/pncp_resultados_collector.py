@@ -30,10 +30,15 @@ class PNCPResultadosCollector(BaseCollector):
         ano = kwargs.get('ano')
         sequencial = kwargs.get('sequencial')
         
-        if cnpj and ano and sequencial:
-            result = await self.collect_all_itens_and_resultados(cnpj, ano, sequencial)
-            return [result] if result else []
-        return []
+        if not (cnpj and ano and sequencial):
+            logger.warning(
+                f"Missing required parameters for collection. "
+                f"Received: cnpj={cnpj}, ano={ano}, sequencial={sequencial}"
+            )
+            return []
+        
+        result = await self.collect_all_itens_and_resultados(cnpj, ano, sequencial)
+        return [result] if result else []
     
     async def collect_itens(
         self,
