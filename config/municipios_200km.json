@@ -1,0 +1,260 @@
+[
+  {
+    "municipio": "Goiânia",
+    "codigo_ibge": "5208707",
+    "distancia_km": 0,
+    "uf": "GO"
+  },
+  {
+    "municipio": "Aparecida de Goiânia",
+    "codigo_ibge": "5201405",
+    "distancia_km": 10,
+    "uf": "GO"
+  },
+  {
+    "municipio": "Senador Canedo",
+    "codigo_ibge": "5221452",
+    "distancia_km": 15,
+    "uf": "GO"
+  },
+  {
+    "municipio": "Trindade",
+    "codigo_ibge": "5221403",
+    "distancia_km": 18,
+    "uf": "GO"
+  },
+  {
+    "municipio": "Goianira",
+    "codigo_ibge": "5207600",
+    "distancia_km": 22,
+    "uf": "GO"
+  },
+  {
+    "municipio": "Nerópolis",
+    "codigo_ibge": "5214509",
+    "distancia_km": 28,
+    "uf": "GO"
+  },
+  {
+    "municipio": "Abadia de Goiás",
+    "codigo_ibge": "5200050",
+    "distancia_km": 30,
+    "uf": "GO"
+  },
+  {
+    "municipio": "Santo Antônio de Goiás",
+    "codigo_ibge": "5219753",
+    "distancia_km": 30,
+    "uf": "GO"
+  },
+  {
+    "municipio": "Hidrolândia",
+    "codigo_ibge": "5209705",
+    "distancia_km": 35,
+    "uf": "GO"
+  },
+  {
+    "municipio": "Aragoiânia",
+    "codigo_ibge": "5201801",
+    "distancia_km": 35,
+    "uf": "GO"
+  },
+  {
+    "municipio": "Caldazinha",
+    "codigo_ibge": "5204409",
+    "distancia_km": 35,
+    "uf": "GO"
+  },
+  {
+    "municipio": "Goianápolis",
+    "codigo_ibge": "5208608",
+    "distancia_km": 35,
+    "uf": "GO"
+  },
+  {
+    "municipio": "Nova Veneza",
+    "codigo_ibge": "5214903",
+    "distancia_km": 35,
+    "uf": "GO"
+  },
+  {
+    "municipio": "Bonfinópolis",
+    "codigo_ibge": "5203559",
+    "distancia_km": 40,
+    "uf": "GO"
+  },
+  {
+    "municipio": "Terezópolis de Goiás",
+    "codigo_ibge": "5221080",
+    "distancia_km": 40,
+    "uf": "GO"
+  },
+  {
+    "municipio": "Brazabrantes",
+    "codigo_ibge": "5203609",
+    "distancia_km": 40,
+    "uf": "GO"
+  },
+  {
+    "municipio": "Bela Vista de Goiás",
+    "codigo_ibge": "5203302",
+    "distancia_km": 45,
+    "uf": "GO"
+  },
+  {
+    "municipio": "Inhumas",
+    "codigo_ibge": "5209804",
+    "distancia_km": 45,
+    "uf": "GO"
+  },
+  {
+    "municipio": "Santa Bárbara de Goiás",
+    "codigo_ibge": "5219001",
+    "distancia_km": 45,
+    "uf": "GO"
+  },
+  {
+    "municipio": "Guapó",
+    "codigo_ibge": "5209200",
+    "distancia_km": 50,
+    "uf": "GO"
+  },
+  {
+    "municipio": "Leopoldo de Bulhões",
+    "codigo_ibge": "5212303",
+    "distancia_km": 50,
+    "uf": "GO"
+  },
+  {
+    "municipio": "Caturaí",
+    "codigo_ibge": "5205406",
+    "distancia_km": 50,
+    "uf": "GO"
+  },
+  {
+    "municipio": "Anápolis",
+    "codigo_ibge": "5201108",
+    "distancia_km": 55,
+    "uf": "GO"
+  },
+  {
+    "municipio": "Damolândia",
+    "codigo_ibge": "5206206",
+    "distancia_km": 55,
+    "uf": "GO"
+  },
+  {
+    "municipio": "Ouro Verde de Goiás",
+    "codigo_ibge": "5215504",
+    "distancia_km": 60,
+    "uf": "GO"
+  },
+  {
+    "municipio": "Palmeiras de Goiás",
+    "codigo_ibge": "5216307",
+    "distancia_km": 65,
+    "uf": "GO"
+  },
+  {
+    "municipio": "Petrolina de Goiás",
+    "codigo_ibge": "5216908",
+    "distancia_km": 70,
+    "uf": "GO"
+  },
+  {
+    "municipio": "Abadiânia",
+    "codigo_ibge": "5200100",
+    "distancia_km": 75,
+    "uf": "GO"
+  },
+  {
+    "municipio": "Vianópolis",
+    "codigo_ibge": "5221809",
+    "distancia_km": 75,
+    "uf": "GO"
+  },
+  {
+    "municipio": "Silvânia",
+    "codigo_ibge": "5220603",
+    "distancia_km": 85,
+    "uf": "GO"
+  },
+  {
+    "municipio": "Piracanjuba",
+    "codigo_ibge": "5217206",
+    "distancia_km": 85,
+    "uf": "GO"
+  },
+  {
+    "municipio": "Itaberaí",
+    "codigo_ibge": "5211507",
+    "distancia_km": 90,
+    "uf": "GO"
+  },
+  {
+    "municipio": "Alexânia",
+    "codigo_ibge": "5200308",
+    "distancia_km": 95,
+    "uf": "GO"
+  },
+  {
+    "municipio": "Cocalzinho de Goiás",
+    "codigo_ibge": "5205513",
+    "distancia_km": 100,
+    "uf": "GO"
+  },
+  {
+    "municipio": "Corumbá de Goiás",
+    "codigo_ibge": "5205802",
+    "distancia_km": 110,
+    "uf": "GO"
+  },
+  {
+    "municipio": "Pontalina",
+    "codigo_ibge": "5218003",
+    "distancia_km": 115,
+    "uf": "GO"
+  },
+  {
+    "municipio": "Pirenópolis",
+    "codigo_ibge": "5217305",
+    "distancia_km": 120,
+    "uf": "GO"
+  },
+  {
+    "municipio": "Jaraguá",
+    "codigo_ibge": "5211909",
+    "distancia_km": 130,
+    "uf": "GO"
+  },
+  {
+    "municipio": "Morrinhos",
+    "codigo_ibge": "5213806",
+    "distancia_km": 130,
+    "uf": "GO"
+  },
+  {
+    "municipio": "Goianésia",
+    "codigo_ibge": "5208400",
+    "distancia_km": 170,
+    "uf": "GO"
+  },
+  {
+    "municipio": "Caldas Novas",
+    "codigo_ibge": "5204508",
+    "distancia_km": 170,
+    "uf": "GO"
+  },
+  {
+    "municipio": "Itumbiara",
+    "codigo_ibge": "5211503",
+    "distancia_km": 200,
+    "uf": "GO"
+  },
+  {
+    "municipio": "Luziânia",
+    "codigo_ibge": "5212501",
+    "distancia_km": 200,
+    "uf": "GO"
+  }
+]
