@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import api from '../services/api';
-import { Licitacao } from '../types';
-import { Search, Calendar } from 'lucide-react';
+import type { Licitacao } from '../types';
+import { Search } from 'lucide-react';
 
 const Licitacoes = () => {
   const [page, setPage] = useState(1);

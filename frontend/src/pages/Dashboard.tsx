@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import api from '../services/api';
-import { KPIs, ChartData } from '../types';
+import type { KPIs, ChartData } from '../types';
 import { TrendingUp, TrendingDown, FileText, AlertCircle } from 'lucide-react';
 
 const Dashboard = () => {

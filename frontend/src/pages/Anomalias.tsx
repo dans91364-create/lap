@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import api from '../services/api';
-import { Anomalia } from '../types';
+import type { Anomalia } from '../types';
 import { AlertTriangle, CheckCircle, XCircle } from 'lucide-react';
 
 const Anomalias = () => {

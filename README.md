@@ -1,35 +1,79 @@
 # LAP - Licitações Aparecida Plus
 
-Sistema completo de coleta de licitações públicas para municípios em um raio de 200km de Goiânia.
+Sistema completo de coleta, análise e visualização de licitações públicas para municípios em um raio de 200km de Goiânia.
 
 ## 📋 Visão Geral
 
-O LAP é um sistema automatizado para coleta, armazenamento e análise de dados de licitações públicas da região de Goiânia e 42 municípios próximos. O sistema coleta dados históricos (2 anos) e mantém atualização contínua através do Portal Nacional de Contratações Públicas (PNCP).
+O LAP é um sistema automatizado para coleta, armazenamento e análise inteligente de dados de licitações públicas da região de Goiânia e 42 municípios próximos. O sistema coleta dados históricos (2 anos) e mantém atualização contínua através do Portal Nacional de Contratações Públicas (PNCP), com funcionalidades avançadas de detecção de anomalias, alertas inteligentes e análise de governança.
 
-## ✨ Funcionalidades
+## ✨ Funcionalidades Principais
 
+### Coleta de Dados
 - 🔄 **Coleta Automática**: Scheduler executando 4x ao dia (6h, 12h, 18h, 00h)
 - 📊 **Dados Completos**: Licitações, itens, vencedores, preços homologados e fornecedores
 - 🗺️ **Cobertura Regional**: 43 municípios em raio de 200km de Goiânia
-- 📈 **API REST**: Interface completa para consultas e análises
+- 📈 **Histórico**: 2 anos de dados retroativos
+
+### Análises Avançadas
+- 🚨 **Detecção de Anomalias**: Identificação automática de preços suspeitos, baixa competição, prazos curtos
+- 📧 **Alertas Inteligentes**: Sistema configurável de notificações por email/Telegram
+- 🏆 **Análise de Governança**: KPIs de transparência, eficiência e concentração de mercado
+- 💰 **Análise de Preços**: Estatísticas, tendências, benchmarks regionais e outliers
+- ⚠️ **Integração CEIS/CNEP**: Verificação de empresas impedidas
+
+### Dashboard Web
+- 📊 **Visualizações Interativas**: Gráficos e mapas com dados em tempo real
 - 🔍 **Busca Avançada**: Filtros por município, modalidade, valor, data e palavras-chave
-- 📦 **Docker**: Ambiente containerizado com PostgreSQL, Redis e pgAdmin
+- 📱 **Responsivo**: Design mobile-first com Tailwind CSS
+- ⚡ **Performance**: React Query para cache inteligente
 
 ## 🏗️ Arquitetura
 
+### Backend (Python)
 ```
-lap/
+src/
+├── api/
+│   ├── main.py                 # FastAPI app
+│   └── routes/                 # Endpoints REST
+│       ├── licitacoes.py
+│       ├── anomalias.py
+│       ├── alertas.py
+│       ├── governanca.py
+│       ├── ceis_cnep.py
+│       ├── precos.py
+│       └── estatisticas.py
+├── services/                   # Lógica de negócio
+│   ├── anomalia_service.py
+│   ├── alerta_service.py
+│   ├── governanca_service.py
+│   ├── ceis_cnep_service.py
+│   └── analise_precos_service.py
+├── collectors/                 # Coletores de dados
+├── models/                     # Modelos SQLAlchemy
+├── database/                   # Conexão e repositórios
+│   ├── migrations/             # Scripts SQL (001-009)
+│   └── repositories/
+└── scheduler/                  # Jobs agendados
+```
+
+### Frontend (React + TypeScript)
+```
+frontend/
 ├── src/
-│   ├── collectors/          # Coletores de dados (PNCP API)
-│   ├── models/              # Modelos SQLAlchemy
-│   ├── database/            # Conexão e repositórios
-│   ├── api/                 # FastAPI routes e schemas
-│   ├── services/            # Lógica de negócio
-│   ├── scheduler/           # Jobs agendados
-│   └── utils/               # Utilitários
-├── config/                  # Configurações e municípios
-├── tests/                   # Testes
-└── docker-compose.yml       # Orquestração de containers
+│   ├── components/
+│   │   └── layout/
+│   │       └── Layout.tsx
+│   ├── pages/
+│   │   ├── Dashboard.tsx       # KPIs e gráficos
+│   │   ├── Licitacoes.tsx      # Lista com filtros
+│   │   ├── Anomalias.tsx       # Detecção de anomalias
+│   │   └── Governanca.tsx      # Ranking de municípios
+│   ├── services/
+│   │   └── api.ts              # Cliente API
+│   └── types/
+│       └── index.ts            # TypeScript types
+├── Dockerfile
+└── nginx.conf
 ```
 
 ## 🚀 Começando
@@ -37,9 +81,10 @@ lap/
 ### Pré-requisitos
 
 - Docker e Docker Compose
-- Python 3.11+ (para desenvolvimento local)
+- Node.js 18+ (para desenvolvimento frontend)
+- Python 3.11+ (para desenvolvimento backend)
 
-### Instalação com Docker
+### Instalação Rápida com Docker
 
 1. Clone o repositório:
 ```bash
@@ -53,195 +98,169 @@ cp .env.example .env
 # Edite .env conforme necessário
 ```
 
-3. Inicie os containers:
+3. Inicie todos os serviços:
 ```bash
 docker-compose up -d
 ```
 
-4. A API estará disponível em:
+4. Acesse as interfaces:
+- **Frontend**: http://localhost:3000
 - **API**: http://localhost:8000
-- **Documentação**: http://localhost:8000/docs
+- **Docs API**: http://localhost:8000/docs
 - **pgAdmin**: http://localhost:5050
 
-### Instalação Local
+### Desenvolvimento Local
 
-1. Crie um ambiente virtual:
+#### Backend
 ```bash
-python -m venv venv
-source venv/bin/activate  # Linux/Mac
-# ou
-venv\Scripts\activate  # Windows
-```
-
-2. Instale as dependências:
-```bash
+# Instalar dependências
 pip install -r requirements.txt
+
+# Executar migrações
+python manage.py migrate
+
+# Iniciar servidor
+uvicorn src.api.main:app --reload --port 8000
 ```
 
-3. Configure as variáveis de ambiente:
+#### Frontend
 ```bash
-cp .env.example .env
-# Edite .env com suas configurações
+cd frontend
+
+# Instalar dependências
+npm install
+
+# Iniciar dev server
+npm run dev
 ```
 
-4. Execute as migrações:
-```bash
-# As tabelas serão criadas automaticamente ao iniciar a aplicação
-```
+## 📊 API Endpoints
 
-5. Inicie a aplicação:
-```bash
-uvicorn src.api.main:app --reload
-```
+### Licitações
+- `GET /api/v1/licitacoes/` - Listar licitações
+- `GET /api/v1/licitacoes/{id}` - Detalhes
+- `POST /api/v1/licitacoes/search` - Busca avançada
 
-## 📚 Uso
+### Anomalias
+- `GET /api/v1/anomalias/` - Listar anomalias detectadas
+- `GET /api/v1/anomalias/{id}` - Detalhes da anomalia
+- `PUT /api/v1/anomalias/{id}/status` - Atualizar status
+- `POST /api/v1/anomalias/executar-analise` - Executar análise
 
-### Carregar Municípios
+### Alertas
+- `GET /api/v1/alertas/configuracoes` - Listar configurações
+- `POST /api/v1/alertas/configuracoes` - Criar alerta
+- `GET /api/v1/alertas/disparados` - Alertas disparados
 
-```python
-from src.services.coleta_service import ColetaService
+### Governança
+- `GET /api/v1/governanca/kpis` - KPIs de governança
+- `GET /api/v1/governanca/ranking` - Ranking de municípios
+- `GET /api/v1/governanca/municipio/{id}` - Relatório completo
 
-service = ColetaService()
-await service.load_municipios_from_config()
-```
+### CEIS/CNEP
+- `GET /api/v1/ceis-cnep/verificar/{cnpj}` - Verificar empresa
+- `GET /api/v1/ceis-cnep/empresas-impedidas` - Listar impedidas
 
-### Coletar Licitações
+### Preços
+- `GET /api/v1/precos/historico` - Histórico de preços
+- `GET /api/v1/precos/estatisticas` - Estatísticas
+- `GET /api/v1/precos/benchmark` - Comparação regional
+- `GET /api/v1/precos/sugestao` - Preço de referência
 
-```python
-# Coletar para um município específico
-await service.collect_licitacoes_for_municipio("5208707", years=2)
-
-# Coletar para todos os municípios
-stats = await service.collect_all_municipios(years=2)
-print(stats)
-```
-
-### API Endpoints
-
-#### Listar Licitações
-```bash
-GET /api/v1/licitacoes/?skip=0&limit=100
-```
-
-#### Buscar Licitações
-```bash
-POST /api/v1/licitacoes/search
-{
-  "municipio_id": 1,
-  "modalidade_id": 6,
-  "palavra_chave": "pavimentação"
-}
-```
-
-#### Listar Municípios
-```bash
-GET /api/v1/municipios/
-```
-
-#### Detalhes de Licitação
-```bash
-GET /api/v1/licitacoes/{id}
-```
+### Estatísticas
+- `GET /api/v1/estatisticas/kpis` - KPIs do dashboard
+- `GET /api/v1/estatisticas/por-mes` - Licitações por mês
+- `GET /api/v1/estatisticas/top-municipios` - Top 10 municípios
+- `GET /api/v1/estatisticas/top-fornecedores` - Top 10 fornecedores
 
 ## 🗄️ Banco de Dados
 
-### Estrutura
+### Tabelas Principais
+- `municipios` - Municípios da região
+- `orgaos` - Órgãos públicos
+- `licitacoes` - Licitações públicas
+- `itens` - Itens das licitações
+- `fornecedores` - Empresas vencedoras
+- `resultados` - Resultados e valores homologados
 
-- **municipios**: Municípios da região
-- **orgaos**: Órgãos públicos (entidades)
-- **licitacoes**: Processos licitatórios
-- **itens**: Itens das licitações
-- **fornecedores**: Fornecedores/Vencedores
-- **resultados**: Resultados por item
-
-### Relacionamentos
-
-```
-Municipio 1---N Licitacao
-Orgao 1---N Licitacao
-Licitacao 1---N Item
-Item 1---N Resultado
-Fornecedor 1---N Resultado
-```
+### Tabelas de Análise
+- `anomalias` - Anomalias detectadas
+- `alertas_configuracao` - Configurações de alertas
+- `alertas_disparados` - Histórico de alertas
+- `empresas_impedidas` - CEIS/CNEP
+- `governanca_municipios` - KPIs por período
 
 ## 🔧 Configuração
 
 ### Variáveis de Ambiente
 
-- **DATABASE_URL**: String de conexão PostgreSQL
-- **REDIS_URL**: URL do Redis
-- **PNCP_BASE_URL**: URL base da API PNCP
-- **SCHEDULER_ENABLED**: Habilitar/desabilitar scheduler
-- **COLLECTION_TIMES**: Horários de coleta (ex: "06:00,12:00,18:00,00:00")
+```env
+# Database
+DATABASE_URL=postgresql://lap_user:lap_password@localhost:5432/lap_db
 
-### Municípios Cobertos
+# Redis
+REDIS_URL=redis://localhost:6379/0
 
-O sistema cobre 43 municípios em Goiás:
-- Goiânia (0km)
-- Aparecida de Goiânia (10km)
-- Anápolis (55km)
-- ... até 200km de raio
+# PNCP API
+PNCP_BASE_URL=https://pncp.gov.br/api/consulta/v1
+PNCP_TIMEOUT=30
 
-Veja a lista completa em `config/municipios_200km.json`
+# Scheduler
+SCHEDULER_ENABLED=true
+SCHEDULER_TIMEZONE=America/Sao_Paulo
+
+# Email (para alertas)
+SMTP_HOST=smtp.gmail.com
+SMTP_PORT=587
+SMTP_USER=seu_email@gmail.com
+SMTP_PASSWORD=sua_senha_app
+```
 
 ## 🧪 Testes
 
 ```bash
-pytest tests/
+# Backend
+pytest
+
+# Frontend
+cd frontend
+npm test
 ```
 
-## 📖 Documentação da API
+## 📦 Deployment
 
-Acesse a documentação interativa em:
-- Swagger UI: http://localhost:8000/docs
-- ReDoc: http://localhost:8000/redoc
+### Produção com Docker
 
-## 🔗 Fontes de Dados
+```bash
+# Build das imagens
+docker-compose build
 
-- **PNCP API**: https://pncp.gov.br/api/consulta/v1
-- **Documentação**: https://pncp.gov.br/api/consulta/swaggerui/index.html
+# Iniciar em produção
+docker-compose -f docker-compose.prod.yml up -d
+```
 
-## 📊 Dados Coletados
+## 🤝 Contribuindo
 
-### Licitação
-- Dados básicos (número, processo, modalidade)
-- Órgão e unidade responsável
-- Objeto e descrição
-- Valores estimados e homologados
-- Datas (publicação, abertura, encerramento)
-- Situação e resultado
-
-### Itens
-- Descrição e quantidade
-- Valores unitários e totais
-- Categoria e classificação
-- Critério de julgamento
-
-### Resultados
-- Fornecedor vencedor
-- Valores homologados
-- Quantidade e descontos
-- Situação do resultado
-
-## 🛠️ Tecnologias
-
-- **Python 3.11+**
-- **FastAPI** - Framework web
-- **SQLAlchemy** - ORM
-- **PostgreSQL** - Banco de dados
-- **Redis** - Cache
-- **Docker** - Containerização
-- **APScheduler** - Agendamento de tarefas
-- **HTTPX** - Cliente HTTP assíncrono
+1. Fork o projeto
+2. Crie uma branch (`git checkout -b feature/AmazingFeature`)
+3. Commit suas mudanças (`git commit -m 'Add some AmazingFeature'`)
+4. Push para a branch (`git push origin feature/AmazingFeature`)
+5. Abra um Pull Request
 
 ## 📝 Licença
 
 Este projeto está sob a licença MIT.
 
-## 👥 Contribuindo
+## 👥 Autores
 
-Contribuições são bem-vindas! Por favor, abra uma issue ou pull request.
+- [@dans91364-create](https://github.com/dans91364-create)
 
-## 📧 Contato
+## 📞 Suporte
 
-Para dúvidas e sugestões, abra uma issue no repositório.
+Para suporte, abra uma issue no GitHub.
+
+## 🙏 Agradecimentos
+
+- PNCP (Portal Nacional de Contratações Públicas) pela API
+- Portal da Transparência (CEIS/CNEP)
+- Comunidade open source
