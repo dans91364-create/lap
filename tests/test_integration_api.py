@@ -4,6 +4,7 @@ import pytest
 from fastapi.testclient import TestClient
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+from unittest.mock import patch
 
 from src.api.main import app
 from src.models import Base
@@ -13,9 +14,12 @@ from src.database.connection import get_db
 @pytest.fixture(scope="function")
 def test_db():
     """Create a test database."""
+    from sqlalchemy.pool import StaticPool
+    
     engine = create_engine(
         "sqlite:///:memory:",
-        connect_args={"check_same_thread": False}
+        connect_args={"check_same_thread": False},
+        poolclass=StaticPool  # Required for SQLite in-memory databases with multiple connections
     )
     Base.metadata.create_all(engine)
     SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
@@ -37,8 +41,10 @@ def client(test_db):
     
     app.dependency_overrides[get_db] = override_get_db
     
-    with TestClient(app) as test_client:
-        yield test_client
+    # Mock init_db to prevent production DB connection attempts during tests
+    with patch('src.api.main.init_db'):
+        with TestClient(app) as test_client:
+            yield test_client
     
     app.dependency_overrides.clear()
 
@@ -144,6 +150,12 @@ class TestAlertasAPIIntegration:
         # List alerts
         response = client.get("/api/v1/alertas/configuracoes")
         assert response.status_code in [200, 401, 403]
+        
+        if response.status_code == 200:
+            data = response.json()
+            assert isinstance(data, dict)
+            assert 'items' in data
+            assert isinstance(data['items'], list)
 
 
 class TestAnomaliaAPIIntegration:
@@ -156,7 +168,9 @@ class TestAnomaliaAPIIntegration:
         
         if response.status_code == 200:
             data = response.json()
-            assert isinstance(data, list)
+            assert isinstance(data, dict)
+            assert 'items' in data
+            assert isinstance(data['items'], list)
     
     def test_filter_anomalies_by_type(self, client):
         """Test filtering anomalies by type."""
@@ -165,7 +179,9 @@ class TestAnomaliaAPIIntegration:
         
         if response.status_code == 200:
             data = response.json()
-            assert isinstance(data, list)
+            assert isinstance(data, dict)
+            assert 'items' in data
+            assert isinstance(data['items'], list)
     
     def test_filter_anomalies_by_status(self, client):
         """Test filtering anomalies by status."""
@@ -174,7 +190,9 @@ class TestAnomaliaAPIIntegration:
         
         if response.status_code == 200:
             data = response.json()
-            assert isinstance(data, list)
+            assert isinstance(data, dict)
+            assert 'items' in data
+            assert isinstance(data['items'], list)
 
 
 class TestEstatisticasAPIIntegration:
