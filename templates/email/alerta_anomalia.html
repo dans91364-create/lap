@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2 style="color: #dc2626;">⚠️ Anomalia Detectada</h2>
+
+<div class="info-row" style="border-left-color: #dc2626;">
+    <span class="label">Tipo:</span> {{ tipo }}
+</div>
+
+<div class="info-row" style="border-left-color: #dc2626;">
+    <span class="label">Severidade:</span> 
+    <span style="color: {% if severidade == 'crítica' %}#dc2626{% elif severidade == 'alta' %}#f59e0b{% else %}#10b981{% endif %};">
+        {{ severidade|upper }}
+    </span>
+</div>
+
+<div class="info-row" style="border-left-color: #dc2626;">
+    <span class="label">Licitação:</span> {{ licitacao_numero }}
+</div>
+
+<div class="info-row" style="border-left-color: #dc2626;">
+    <span class="label">Descrição:</span>
+    <p>{{ descricao }}</p>
+</div>
+
+<div style="text-align: center; margin: 20px 0;">
+    <a href="{{ url }}" class="button" style="background-color: #dc2626;">Analisar Anomalia</a>
+</div>
+
+<p style="margin-top: 20px; color: #6b7280;">
+    Esta anomalia foi detectada automaticamente pelo sistema de análise do LAP. Recomendamos verificação imediata.
+</p>
+{% endblock %}

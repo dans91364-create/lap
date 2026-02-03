@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2 style="color: #2563eb;">🔔 Nova Licitação Detectada</h2>
+
+<div class="info-row">
+    <span class="label">Número:</span> {{ numero }}
+</div>
+
+<div class="info-row">
+    <span class="label">Município:</span> {{ municipio }}
+</div>
+
+<div class="info-row">
+    <span class="label">Modalidade:</span> {{ modalidade }}
+</div>
+
+<div class="info-row">
+    <span class="label">Valor Estimado:</span> R$ {{ "%.2f"|format(valor) }}
+</div>
+
+<div class="info-row">
+    <span class="label">Data de Abertura:</span> {{ data_abertura }}
+</div>
+
+<div class="info-row">
+    <span class="label">Objeto:</span>
+    <p>{{ objeto }}</p>
+</div>
+
+<div style="text-align: center; margin: 20px 0;">
+    <a href="{{ url }}" class="button">Ver Detalhes da Licitação</a>
+</div>
+
+<p style="margin-top: 20px; color: #6b7280;">
+    Esta licitação foi detectada automaticamente pelo sistema LAP. Acesse a plataforma para mais informações.
+</p>
+{% endblock %}

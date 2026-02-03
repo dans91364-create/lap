@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Relatório Diário - {{ data }}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            color: #333;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 3px solid #2563eb;
+            padding-bottom: 20px;
+        }
+        .header h1 {
+            color: #2563eb;
+            margin: 0;
+        }
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin: 30px 0;
+        }
+        .stat-box {
+            text-align: center;
+            padding: 20px;
+            background: #f3f4f6;
+            border-radius: 8px;
+            min-width: 150px;
+        }
+        .stat-box .number {
+            font-size: 32px;
+            font-weight: bold;
+            color: #2563eb;
+        }
+        .stat-box .label {
+            font-size: 14px;
+            color: #6b7280;
+            margin-top: 5px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        th {
+            background: #2563eb;
+            color: white;
+            padding: 12px;
+            text-align: left;
+        }
+        td {
+            padding: 10px 12px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        tr:nth-child(even) {
+            background: #f9fafb;
+        }
+        .footer {
+            margin-top: 40px;
+            text-align: center;
+            font-size: 12px;
+            color: #6b7280;
+            border-top: 1px solid #e5e7eb;
+            padding-top: 20px;
+        }
+        h2 {
+            color: #1f2937;
+            border-bottom: 2px solid #e5e7eb;
+            padding-bottom: 10px;
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>LAP - Relatório Diário de Licitações</h1>
+        <p>Data: {{ data }}</p>
+    </div>
+    
+    <div class="stats">
+        <div class="stat-box">
+            <div class="number">{{ total_licitacoes }}</div>
+            <div class="label">Licitações</div>
+        </div>
+        <div class="stat-box">
+            <div class="number">R$ {{ "%.2f"|format(valor_total) }}</div>
+            <div class="label">Valor Total</div>
+        </div>
+    </div>
+    
+    <h2>Distribuição por Modalidade</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Modalidade</th>
+                <th>Quantidade</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for m in modalidades %}
+            <tr>
+                <td>{{ m.nome }}</td>
+                <td>{{ m.count }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    
+    <h2>Top 10 Licitações por Valor</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Número</th>
+                <th>Município</th>
+                <th>Objeto</th>
+                <th>Valor</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for l in licitacoes %}
+            <tr>
+                <td>{{ l.numero }}</td>
+                <td>{{ l.municipio }}</td>
+                <td>{{ l.objeto }}</td>
+                <td>R$ {{ "%.2f"|format(l.valor) }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    
+    <div class="footer">
+        <p>Relatório gerado em {{ generated_at }}</p>
+        <p>LAP - Licitações Aparecida Plus © 2024</p>
+    </div>
+</body>
+</html>

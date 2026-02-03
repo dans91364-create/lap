@@ -71,7 +71,7 @@ async def health():
 try:
     from src.api.routes import (
         licitacoes, municipios, anomalias, alertas, 
-        governanca, ceis_cnep, precos, estatisticas, auth
+        governanca, ceis_cnep, precos, estatisticas, auth, relatorios
     )
     
     app.include_router(auth.router)
@@ -83,6 +83,7 @@ try:
     app.include_router(ceis_cnep.router)
     app.include_router(precos.router)
     app.include_router(estatisticas.router)
+    app.include_router(relatorios.router)
     
 except ImportError as e:
     logger.warning(f"Could not import some routes: {e}")
