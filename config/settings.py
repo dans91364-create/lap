@@ -45,6 +45,17 @@ class Settings(BaseSettings):
     SMTP_PASSWORD: str = ""
     SMTP_FROM: str = "noreply@lap.com"
     
+    # Telegram Configuration
+    TELEGRAM_BOT_TOKEN: str = ""
+    
+    # JWT Configuration
+    SECRET_KEY: str = "your-secret-key-change-in-production"
+    ALGORITHM: str = "HS256"
+    ACCESS_TOKEN_EXPIRE_HOURS: int = 24
+    
+    # Frontend Configuration
+    FRONTEND_URL: str = "http://localhost:3000"
+    
     # Application Settings
     APP_NAME: str = "LAP - Licitações Aparecida Plus"
     APP_VERSION: str = "1.0.0"

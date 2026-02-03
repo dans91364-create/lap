@@ -71,9 +71,10 @@ async def health():
 try:
     from src.api.routes import (
         licitacoes, municipios, anomalias, alertas, 
-        governanca, ceis_cnep, precos, estatisticas
+        governanca, ceis_cnep, precos, estatisticas, auth
     )
     
+    app.include_router(auth.router)
     app.include_router(licitacoes.router, prefix="/api/v1/licitacoes", tags=["Licitações"])
     app.include_router(municipios.router, prefix="/api/v1/municipios", tags=["Municípios"])
     app.include_router(anomalias.router)
