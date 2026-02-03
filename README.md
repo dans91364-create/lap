@@ -229,15 +229,51 @@ npm test
 
 ## 📦 Deployment
 
-### Produção com Docker
+### Desenvolvimento
+
+Para ambiente de desenvolvimento local:
 
 ```bash
-# Build das imagens
-docker-compose build
-
-# Iniciar em produção
-docker-compose -f docker-compose.prod.yml up -d
+docker-compose up -d
 ```
+
+### Produção
+
+Para deploy em produção (Oracle Cloud, AWS, etc):
+
+```bash
+# Clone o repositório
+git clone https://github.com/dans91364-create/lap.git
+cd lap
+
+# Execute o script de deploy automatizado
+./deploy.sh
+```
+
+O script irá:
+- ✅ Instalar Docker e Docker Compose (se necessário)
+- ✅ Criar arquivo `.env` com senhas seguras geradas automaticamente
+- ✅ Fazer build das imagens otimizadas para produção
+- ✅ Iniciar todos os serviços com configurações de segurança
+- ✅ Verificar a saúde da aplicação
+
+**📖 Para instruções completas de deploy, consulte [DEPLOY.md](DEPLOY.md)**
+
+#### Diferenças entre Desenvolvimento e Produção
+
+| Característica | Desenvolvimento | Produção |
+|----------------|-----------------|----------|
+| Servidor WSGI | Uvicorn com --reload | Gunicorn + Uvicorn workers |
+| Workers | 1 worker | 4 workers (configurável) |
+| DEBUG | true | false |
+| Senhas | Hardcoded | Variáveis de ambiente |
+| PostgreSQL | Porta exposta (5432) | Apenas interno |
+| Redis | Porta exposta (6379) | Apenas interno |
+| pgAdmin | Habilitado | Desabilitado |
+| HTTPS | Não | Configurável (Let's Encrypt) |
+| Resource Limits | Não | Sim (CPU/Memória) |
+| Health Checks | Básico | Completo |
+| Logs | INFO | WARNING |
 
 ## 🤝 Contribuindo
 
