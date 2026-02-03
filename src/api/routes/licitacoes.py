@@ -28,17 +28,19 @@ async def list_licitacoes(
     return licitacoes
 
 
-@router.get("/{licitacao_id}", response_model=LicitacaoDetail)
-async def get_licitacao(
-    licitacao_id: int,
+# IMPORTANTE: Rotas específicas ANTES de rotas com parâmetros genéricos
+@router.get("/stats/count")
+async def count_licitacoes(
+    municipio_id: Optional[int] = None,
     db: Session = Depends(get_db)
 ):
-    """Get bidding by ID."""
+    """Count biddings."""
     repo = LicitacaoRepository(db)
-    licitacao = repo.get_by_id(licitacao_id)
-    if not licitacao:
-        raise HTTPException(status_code=404, detail="Licitação não encontrada")
-    return licitacao
+    if municipio_id:
+        count = repo.count_by_municipio(municipio_id)
+    else:
+        count = repo.count()
+    return {"count": count}
 
 
 @router.get("/controle/{numero_controle}", response_model=LicitacaoDetail)
@@ -75,15 +77,15 @@ async def search_licitacoes(
     return licitacoes
 
 
-@router.get("/stats/count")
-async def count_licitacoes(
-    municipio_id: Optional[int] = None,
+# Rota com parâmetro genérico por ÚLTIMO
+@router.get("/{licitacao_id}", response_model=LicitacaoDetail)
+async def get_licitacao(
+    licitacao_id: int,
     db: Session = Depends(get_db)
 ):
-    """Count biddings."""
+    """Get bidding by ID."""
     repo = LicitacaoRepository(db)
-    if municipio_id:
-        count = repo.count_by_municipio(municipio_id)
-    else:
-        count = repo.count()
-    return {"count": count}
+    licitacao = repo.get_by_id(licitacao_id)
+    if not licitacao:
+        raise HTTPException(status_code=404, detail="Licitação não encontrada")
+    return licitacao
