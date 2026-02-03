@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2 style="color: #059669;">📊 Relatório Disponível</h2>
+
+<p>Seu relatório foi gerado com sucesso e está disponível para download.</p>
+
+<div class="info-row">
+    <span class="label">Tipo:</span> {{ tipo }}
+</div>
+
+<div class="info-row">
+    <span class="label">Formato:</span> {{ formato }}
+</div>
+
+<div class="info-row">
+    <span class="label">Data de Geração:</span> {{ data }}
+</div>
+
+<div style="text-align: center; margin: 20px 0;">
+    <a href="{{ download_url }}" class="button" style="background-color: #059669;">⬇️ Baixar Relatório</a>
+</div>
+
+<p style="margin-top: 20px; color: #6b7280;">
+    O relatório estará disponível para download por 30 dias. Após esse período, será necessário gerar um novo relatório.
+</p>
+{% endblock %}

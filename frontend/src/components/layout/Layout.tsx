@@ -1,6 +1,10 @@
 import { type ReactNode } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { BarChart3, FileText, AlertTriangle, Award } from 'lucide-react';
+import { 
+  BarChart3, FileText, AlertTriangle, Award, 
+  Building2, MapPin, ShoppingCart, Bell, 
+  ShieldAlert, FileSpreadsheet 
+} from 'lucide-react';
 
 interface LayoutProps {
   children: ReactNode;
@@ -14,8 +18,14 @@ const Layout = ({ children }: LayoutProps) => {
   const navItems = [
     { path: '/', label: 'Dashboard', icon: BarChart3 },
     { path: '/licitacoes', label: 'Licitações', icon: FileText },
+    { path: '/fornecedores', label: 'Fornecedores', icon: Building2 },
+    { path: '/municipios', label: 'Municípios', icon: MapPin },
+    { path: '/itens', label: 'Itens/Preços', icon: ShoppingCart },
     { path: '/anomalias', label: 'Anomalias', icon: AlertTriangle },
+    { path: '/alertas', label: 'Alertas', icon: Bell },
+    { path: '/ceis', label: 'CEIS/CNEP', icon: ShieldAlert },
     { path: '/governanca', label: 'Governança', icon: Award },
+    { path: '/relatorios', label: 'Relatórios', icon: FileSpreadsheet },
   ];
   
   return (
@@ -30,7 +40,7 @@ const Layout = ({ children }: LayoutProps) => {
       </header>
       
       {/* Navigation */}
-      <nav className="bg-white shadow-sm border-b">
+      <nav className="bg-white shadow-sm border-b overflow-x-auto">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex space-x-8">
             {navItems.map((item) => {
@@ -39,7 +49,7 @@ const Layout = ({ children }: LayoutProps) => {
                 <Link
                   key={item.path}
                   to={item.path}
-                  className={`flex items-center px-3 py-4 text-sm font-medium border-b-2 transition-colors ${
+                  className={`flex items-center px-3 py-4 text-sm font-medium border-b-2 transition-colors whitespace-nowrap ${
                     isActive(item.path)
                       ? 'border-blue-500 text-blue-600'
                       : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'

@@ -33,6 +33,11 @@ jinja2>=3.1.0
 # PDF Generation
 weasyprint>=60.0
 
+# Authentication
+python-jose[cryptography]>=3.3.0
+passlib[bcrypt]>=1.7.4
+python-multipart>=0.0.6
+
 # Utilities
 python-dotenv==1.0.0
 python-dateutil==2.8.2
