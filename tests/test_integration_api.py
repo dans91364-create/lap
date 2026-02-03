@@ -10,19 +10,22 @@ from src.models import Base
 from src.database.connection import get_db
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture(scope="function")
 def test_db():
     """Create a test database."""
-    engine = create_engine("sqlite:///:memory:")
+    engine = create_engine(
+        "sqlite:///:memory:",
+        connect_args={"check_same_thread": False}
+    )
     Base.metadata.create_all(engine)
-    SessionLocal = sessionmaker(bind=engine)
+    SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
     
     yield SessionLocal
     
     Base.metadata.drop_all(engine)
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture(scope="function")
 def client(test_db):
     """Create a test client."""
     def override_get_db():
@@ -34,7 +37,7 @@ def client(test_db):
     
     app.dependency_overrides[get_db] = override_get_db
     
-    with TestClient(app) as test_client:
+    with TestClient(app, raise_server_exceptions=False) as test_client:
         yield test_client
     
     app.dependency_overrides.clear()
@@ -69,14 +72,14 @@ class TestMunicipiosAPIIntegration:
     
     def test_list_municipios(self, client):
         """Test listing municipalities."""
-        response = client.get("/api/municipios/")
+        response = client.get("/api/v1/municipios/")
         assert response.status_code == 200
         data = response.json()
         assert isinstance(data, list)
     
     def test_filter_municipios_by_uf(self, client):
         """Test filtering municipalities by state."""
-        response = client.get("/api/municipios/?uf=GO")
+        response = client.get("/api/v1/municipios/?uf=GO")
         assert response.status_code == 200
         data = response.json()
         assert isinstance(data, list)
@@ -87,14 +90,14 @@ class TestLicitacoesAPIIntegration:
     
     def test_list_licitacoes(self, client):
         """Test listing biddings."""
-        response = client.get("/api/licitacoes/")
+        response = client.get("/api/v1/licitacoes/")
         assert response.status_code == 200
         data = response.json()
         assert isinstance(data, list)
     
     def test_count_licitacoes(self, client):
         """Test counting biddings."""
-        response = client.get("/api/licitacoes/count")
+        response = client.get("/api/v1/licitacoes/stats/count")
         assert response.status_code == 200
         data = response.json()
         assert "count" in data
@@ -102,14 +105,14 @@ class TestLicitacoesAPIIntegration:
     
     def test_filter_licitacoes_by_modalidade(self, client):
         """Test filtering biddings by modality."""
-        response = client.get("/api/licitacoes/?modalidade=Pregão")
+        response = client.get("/api/v1/licitacoes/?modalidade=Pregão")
         assert response.status_code == 200
         data = response.json()
         assert isinstance(data, list)
     
     def test_filter_licitacoes_by_uf(self, client):
         """Test filtering biddings by state."""
-        response = client.get("/api/licitacoes/?uf=GO")
+        response = client.get("/api/v1/licitacoes/?uf=GO")
         assert response.status_code == 200
         data = response.json()
         assert isinstance(data, list)
@@ -134,12 +137,12 @@ class TestAlertasAPIIntegration:
         }
         
         # Try to create alert
-        response = client.post("/api/alertas/configuracao", json=alert_data)
+        response = client.post("/api/v1/alertas/configuracoes", json=alert_data)
         # May fail if authentication is required
         assert response.status_code in [200, 201, 401, 403, 404]
         
         # List alerts
-        response = client.get("/api/alertas/configuracao")
+        response = client.get("/api/v1/alertas/configuracoes")
         assert response.status_code in [200, 401, 403]
 
 
@@ -148,7 +151,7 @@ class TestAnomaliaAPIIntegration:
     
     def test_list_anomalies(self, client):
         """Test listing anomalies."""
-        response = client.get("/api/anomalias/")
+        response = client.get("/api/v1/anomalias/")
         assert response.status_code in [200, 401, 403]
         
         if response.status_code == 200:
@@ -157,7 +160,7 @@ class TestAnomaliaAPIIntegration:
     
     def test_filter_anomalies_by_type(self, client):
         """Test filtering anomalies by type."""
-        response = client.get("/api/anomalias/?tipo=preco_elevado")
+        response = client.get("/api/v1/anomalias/?tipo=preco_elevado")
         assert response.status_code in [200, 401, 403]
         
         if response.status_code == 200:
@@ -166,7 +169,7 @@ class TestAnomaliaAPIIntegration:
     
     def test_filter_anomalies_by_status(self, client):
         """Test filtering anomalies by status."""
-        response = client.get("/api/anomalias/?status=pendente")
+        response = client.get("/api/v1/anomalias/?status=pendente")
         assert response.status_code in [200, 401, 403]
         
         if response.status_code == 200:
@@ -205,7 +208,7 @@ class TestHealthEndpointsIntegration:
         assert response.status_code == 200
         data = response.json()
         assert "name" in data
-        assert data["name"] == "LAP - Licitações Análise Pública"
+        assert data["name"] == "LAP - Licitações Aparecida Plus"
     
     def test_health_endpoint(self, client):
         """Test health check endpoint."""
