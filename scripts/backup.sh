@@ -16,8 +16,8 @@ BACKUP_DIR="./backups"
 DATE=$(date +%Y%m%d_%H%M%S)
 RETENTION_DAYS=30
 
-# Criar diretório de backup se não existir
-mkdir -p $BACKUP_DIR
+# Crear diretório de backup se não existir
+mkdir -p "$BACKUP_DIR"
 
 # Carregar variáveis de ambiente
 if [ -f .env ]; then

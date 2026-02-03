@@ -33,6 +33,8 @@ services:
       - "6379"
     volumes:
       - redis_data:/data
+    # allkeys-lru: Evict any key using LRU when maxmemory is reached
+    # Appropriate for cache usage where data can be regenerated from database
     command: redis-server --appendonly yes --maxmemory 128mb --maxmemory-policy allkeys-lru
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]

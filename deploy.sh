@@ -47,7 +47,7 @@ if [ ! -f .env ]; then
     sed -i "s/GERE_UMA_CHAVE_SECRETA_COM_OPENSSL/$SECRET_KEY/" .env
     
     # Gerar senha do banco automaticamente
-    DB_PASSWORD=$(openssl rand -base64 24 | tr -dc 'a-zA-Z0-9' | head -c 32)
+    DB_PASSWORD=$(openssl rand -base64 32 | tr -d '/+=' | head -c 32)
     sed -i "s/ALTERE_ESTA_SENHA_FORTE_AQUI/$DB_PASSWORD/" .env
     
     echo -e "${GREEN}✅ Arquivo .env criado com senhas geradas automaticamente.${NC}"

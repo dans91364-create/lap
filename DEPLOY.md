@@ -228,8 +228,10 @@ sudo crontab -e
 ```
 
 ```
-0 0 * * * certbot renew --quiet --post-hook "docker-compose -f /home/ubuntu/lap/docker-compose.prod.yml restart frontend"
+0 0 * * * certbot renew --quiet --post-hook "docker-compose -f $(pwd)/docker-compose.prod.yml restart frontend"
 ```
+
+**Note:** Replace `$(pwd)` with the full path to your LAP installation directory (e.g., `/home/ubuntu/lap`).
 
 ### Opção 2: Cloudflare (Alternativa Gratuita)
 
@@ -309,8 +311,10 @@ crontab -e
 ```
 
 ```
-0 3 * * * cd /home/ubuntu/lap && ./scripts/backup.sh >> /var/log/lap-backup.log 2>&1
+0 3 * * * cd $(pwd) && ./scripts/backup.sh >> /var/log/lap-backup.log 2>&1
 ```
+
+**Note:** Replace `$(pwd)` with the full path to your LAP installation directory (e.g., `/home/ubuntu/lap`).
 
 ### Restore do Backup
 
