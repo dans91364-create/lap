@@ -67,3 +67,9 @@ data/
 *.csv
 *.xlsx
 !config/*.json
+
+# Backups
+backups/
+
+# SSL certificates
+nginx/ssl/
