@@ -68,25 +68,27 @@ async def health():
 
 
 # Import and include routers
+from src.api.routes import (
+    licitacoes, municipios, anomalias, alertas, 
+    governanca, ceis_cnep, precos, estatisticas
+)
+
+# Verificar se auth e relatorios existem antes de importar
 try:
-    from src.api.routes import (
-        licitacoes, municipios, anomalias, alertas, 
-        governanca, ceis_cnep, precos, estatisticas, auth, relatorios
-    )
-    
+    from src.api.routes import auth, relatorios
     app.include_router(auth.router)
-    app.include_router(licitacoes.router, prefix="/api/v1/licitacoes", tags=["Licitações"])
-    app.include_router(municipios.router, prefix="/api/v1/municipios", tags=["Municípios"])
-    app.include_router(anomalias.router)
-    app.include_router(alertas.router)
-    app.include_router(governanca.router)
-    app.include_router(ceis_cnep.router)
-    app.include_router(precos.router)
-    app.include_router(estatisticas.router)
     app.include_router(relatorios.router)
-    
 except ImportError as e:
-    logger.warning(f"Could not import some routes: {e}")
+    logger.warning(f"Optional routes (auth, relatorios) not available: {e}")
+
+app.include_router(licitacoes.router, prefix="/api/v1/licitacoes", tags=["Licitações"])
+app.include_router(municipios.router, prefix="/api/v1/municipios", tags=["Municípios"])
+app.include_router(anomalias.router)
+app.include_router(alertas.router)
+app.include_router(governanca.router)
+app.include_router(ceis_cnep.router)
+app.include_router(precos.router)
+app.include_router(estatisticas.router)
 
 
 if __name__ == "__main__":
