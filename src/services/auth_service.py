@@ -1,6 +1,6 @@
 """Authentication service for JWT token management."""
 
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from typing import Optional
 from jose import JWTError, jwt
 from passlib.context import CryptContext
@@ -32,9 +32,9 @@ class AuthService:
         to_encode = data.copy()
         
         if expires_delta:
-            expire = datetime.utcnow() + expires_delta
+            expire = datetime.now(timezone.utc) + expires_delta
         else:
-            expire = datetime.utcnow() + timedelta(hours=self.access_token_expire_hours)
+            expire = datetime.now(timezone.utc) + timedelta(hours=self.access_token_expire_hours)
         
         to_encode.update({"exp": expire})
         encoded_jwt = jwt.encode(to_encode, self.secret_key, algorithm=self.algorithm)

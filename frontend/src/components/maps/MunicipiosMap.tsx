@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { MapContainer, TileLayer, CircleMarker, Popup } from 'react-leaflet';
+import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 
 interface Municipio {
@@ -85,8 +86,5 @@ const MunicipiosMap = ({
     </div>
   );
 };
-
-// Import L after component definition to avoid SSR issues
-import L from 'leaflet';
 
 export default MunicipiosMap;
